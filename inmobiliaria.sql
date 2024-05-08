@@ -1,6 +1,7 @@
 create database inmobiliaria; 
 use inmobiliaria;
 
+
 -- ZONA
 CREATE TABLE zona (
     id_zona INT NOT NULL AUTO_INCREMENT,
@@ -113,4 +114,30 @@ constraint fk_idinmueble foreign key (id_inmueble) references inmueble(id_inmueb
 constraint fk_id_cliente foreign key (id_cliente) references cliente(id_cliente)
 );
 
+select * from USER;
+USE inmobiliaria;
+select current_user();
+create user 'administrador'@'%' identified by 'admin';
+GRANT ALL PRIVILEGES ON * . * TO 'administrador'@'%';
+flush privileges;
 
+create user 'agente_inmobiliario'@'%' identified by 'agente';
+grant insert, select on inmobiliaria .tipo_inmueble to 'agente_inmobiliario';
+grant insert, select on inmobiliaria .inmueble to 'agente_inmobiliario';
+grant insert, select on inmobiliaria .estancia to 'agente_inmobiliario';
+grant insert, select on inmobiliaria .propietario to 'agente_inmobiliario';
+grant insert, select on inmobiliaria .ciudad to 'agente_inmobiliario';
+grant insert, select on inmobiliaria .zona to 'agente_inmobiliario';
+flush privileges;
+
+create user 'gerente'@'%' identified by 'gerent';
+grant insert, update, delete on * . * to 'gerente';
+flush privileges;
+
+create user 'backup'@'%' identified by 'back';
+GRANT SELECT, SHOW VIEW, LOCK TABLES, RELOAD, FILE ON *.* TO 'backup'@'%';
+flush privileges;
+
+create user 'restore'@'%' identified by 'res';
+GRANT SELECT, INSERT, DELETE, CREATE, DROP, FILE ON *.* TO 'restore'@'%';
+flush privileges;
